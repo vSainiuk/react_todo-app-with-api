@@ -2,7 +2,7 @@
 /* eslint-disable object-curly-newline */
 /* eslint-disable max-len */
 // eslint-disable-next-line object-curly-newline
-import React, { useContext, useEffect, useState, FormEvent, KeyboardEvent } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Todo } from '../types/Todo';
 import { TodoContext } from '../contexts/TodoContext';
@@ -12,7 +12,7 @@ interface Props {
   todo: Todo;
 }
 
-type EditEvent = FormEvent<HTMLFormElement> | KeyboardEvent<HTMLInputElement> | null;
+// type EditEvent = FormEvent<HTMLFormElement> | KeyboardEvent<HTMLInputElement> | null;
 
 export const TodoItem: React.FC<Props> = ({ todo }) => {
   const { setTodos, setErrorMessage, loadingTodo, loadingAllTodos, setLoadingTodo } = useContext(TodoContext);
@@ -21,22 +21,20 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [error, setError] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  // const [isSubmitted, setIsSubmitted] = useState(false);
 
   const myInput = React.createRef<HTMLInputElement>();
 
   useEffect(() => {
-    myInput.current && myInput.current.focus();
-  }, [loadingAllTodos, myInput]);
-
-  // let timerId: NodeJS.Timeout;
+    isEditing && myInput.current && myInput.current.focus();
+  }, [isEditing, myInput]);
 
   const handleEditStart = () => {
     setIsEditing(true);
   };
 
   const handleEditCancel = () => {
-    setIsSubmitted(false);
+    // setIsSubmitted(false);
     setIsEditing(false);
     setNewTitle(title);
   };
@@ -71,16 +69,16 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
       });
   };
 
-  const handleEditSubmit = (event: EditEvent = null) => {
+  const handleEditSubmit = (event) => {
     if (event) {
       event.preventDefault();
     }
 
-    if (isSubmitted) {
-      return;
-    }
+    // if (isSubmitted) {
+    //   return;
+    // }
 
-    setIsSubmitted(true);
+    // setIsSubmitted(true);
 
     if (!newTitle?.trim()) {
       handleDeleteTodo(todo.id);
@@ -138,7 +136,7 @@ export const TodoItem: React.FC<Props> = ({ todo }) => {
           <input
             onKeyUp={handleKeyUp}
             ref={myInput}
-            onBlur={() => handleEditSubmit()}
+            onBlur={(event) => handleEditSubmit(event)}
             data-cy="TodoTitleField"
             type="text"
             className="todo__title-field"

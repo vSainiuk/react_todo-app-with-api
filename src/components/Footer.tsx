@@ -31,7 +31,7 @@ export const Footer = () => {
     }, 3000);
   };
 
-  const handleDelete = ((ids: number[]) => {
+  const handleDelete = (ids: number[]) => {
     setLoadingAllTodos(true);
 
     Promise.all(ids.map(id => deleteTodo(id)))
@@ -40,7 +40,7 @@ export const Footer = () => {
       })
       .catch(() => setErrorMessage('Unable to delete a todo'))
       .finally(() => handleCatch());
-  });
+  };
 
   const hasCompleted = todos.some(t => t.completed);
 
